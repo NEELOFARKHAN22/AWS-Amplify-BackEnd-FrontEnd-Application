@@ -52,7 +52,7 @@ function Register() {
     event.preventDefault();
 
     axios
-      .post("http://localhost/api/register.php", {
+      .post("http://54.82.196.16/api/register", {
         username: username,
         email: email,
         password: password,
@@ -147,7 +147,7 @@ function Register() {
             gutterBottom
             style={{ marginTop: "20px" }}
           >
-            Do You have an account? <Link href="/login">Sign in</Link>
+            Do you have an account? <Link href="/login">Sign in</Link>
           </Typography>
         </form>
       </Container>
