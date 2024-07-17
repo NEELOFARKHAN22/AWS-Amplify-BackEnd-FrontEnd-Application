@@ -30,8 +30,9 @@ function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     axios
-      .post("http://localhost/api/login.php", {
+      .post("http://54.82.196.16/api/login", {
         email: email,
         password: password,
       })
@@ -117,5 +118,3 @@ function Login() {
 }
 
 export default Login;
-
-
