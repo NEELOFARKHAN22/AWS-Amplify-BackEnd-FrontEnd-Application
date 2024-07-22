@@ -1,22 +1,12 @@
 version: 0.2
 
 phases:
-  install:
-    commands:
-      - echo Installing PHP and dependencies
-      - sudo apt-get update -y
-      - sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql unzip
-      - sudo apt-get install -y apache2 libapache2-mod-php
   pre_build:
     commands:
-      - echo Installing Composer
-      - cd /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
-      - curl -sS https://getcomposer.org/installer | php
-      - sudo mv composer.phar /usr/local/bin/composer
+      - echo Preparing to configure Apache for Laravel
+      - sudo systemctl stop apache2
   build:
     commands:
-      - echo Running Composer install
-      - composer install --ignore-platform-req=ext-curl
       - echo Configuring Apache for Laravel
       - sudo chown -R www-data:www-data /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
       - sudo chmod -R 755 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
@@ -32,8 +22,8 @@ phases:
                 AllowOverride All
                 Require all granted
             </Directory>
-            ErrorLog ${APACHE_LOG_DIR}/error.log
-            CustomLog ${APACHE_LOG_DIR}/access.log combined
+            ErrorLog \${APACHE_LOG_DIR}/error.log
+            CustomLog \${APACHE_LOG_DIR}/access.log combined
         </VirtualHost>
         EOT
       - sudo a2enmod rewrite
@@ -42,7 +32,7 @@ phases:
       - sudo systemctl restart apache2
   post_build:
     commands:
-      - echo Build completed successfully
+      - echo Apache configuration completed successfully
 
 artifacts:
   files:
