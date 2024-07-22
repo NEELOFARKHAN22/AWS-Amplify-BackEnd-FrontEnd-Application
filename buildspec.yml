@@ -4,7 +4,12 @@ phases:
   pre_build:
     commands:
       - echo Preparing to configure Apache for Laravel
-      - sudo systemctl stop apache2
+      - |
+        if systemctl is-active --quiet apache2; then
+          sudo systemctl stop apache2
+        else
+          echo "Apache is not running"
+        fi
   build:
     commands:
       - echo Configuring Apache for Laravel
