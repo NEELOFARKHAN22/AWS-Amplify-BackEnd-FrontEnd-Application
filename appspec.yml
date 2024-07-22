@@ -1,0 +1,28 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
+
+hooks:
+  ApplicationStart:
+    - location: /dev/null
+      timeout: 300
+      runas: root
+      script: |
+        #!/bin/bash
+        echo "Starting Apache server"
+        sudo systemctl start apache2
+  ValidateService:
+    - location: /dev/null
+      timeout: 300
+      runas: root
+      script: |
+        #!/bin/bash
+        echo "Validating service"
+        SERVICE_STATUS=$(sudo systemctl is-active apache2)
+        if [ "$SERVICE_STATUS" != "active" ]; then
+            echo "Apache is not running"
+            exit 1
+        fi
+        echo "Apache is running"
