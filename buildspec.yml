@@ -1,0 +1,51 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 8.1
+    commands:
+      - echo Installing PHP and dependencies
+      - sudo apt update
+      - sudo apt install -y php php-cli php-mbstring php-xml php-mysql unzip
+      - sudo apt install -y apache2 libapache2-mod-php
+  pre_build:
+    commands:
+      - echo Installing Composer
+      - cd /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
+      - curl -sS https://getcomposer.org/installer | php
+      - sudo mv composer.phar /usr/local/bin/composer
+  build:
+    commands:
+      - echo Running Composer install
+      - composer install --ignore-platform-req=ext-curl
+      - echo Configuring Apache for Laravel
+      - sudo chown -R www-data:www-data /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
+      - sudo chmod -R 755 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
+      - sudo chmod -R 775 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/storage
+      - sudo chmod -R 775 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/bootstrap/cache
+      - |
+        sudo tee /etc/apache2/sites-available/laravel.conf > /dev/null <<EOT
+        <VirtualHost *:80>
+            ServerAdmin webmaster@localhost
+            DocumentRoot /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/public
+            <Directory /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/public>
+                Options Indexes FollowSymLinks
+                AllowOverride All
+                Require all granted
+            </Directory>
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+        </VirtualHost>
+        EOT
+      - sudo a2enmod rewrite
+      - sudo a2dissite 000-default.conf
+      - sudo a2ensite laravel.conf
+      - sudo systemctl restart apache2
+  post_build:
+    commands:
+      - echo Build completed successfully
+
+artifacts:
+  files:
+    - '**/*'
