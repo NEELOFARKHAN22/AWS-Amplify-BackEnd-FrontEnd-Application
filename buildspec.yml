@@ -3,16 +3,17 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Preparing to configure Apache for Laravel
+      - echo "Preparing to configure Apache for Laravel"
       - |
         if systemctl is-active --quiet apache2; then
           sudo systemctl stop apache2
         else
           echo "Apache is not running"
         fi
+
   build:
     commands:
-      - echo Configuring Apache for Laravel
+      - echo "Configuring Apache for Laravel"
       - sudo chown -R www-data:www-data /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
       - sudo chmod -R 755 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
       - sudo chmod -R 775 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/storage
@@ -35,9 +36,10 @@ phases:
       - sudo a2dissite 000-default.conf
       - sudo a2ensite laravel.conf
       - sudo systemctl restart apache2
+
   post_build:
     commands:
-      - echo Apache configuration completed successfully
+      - echo "Apache configuration completed successfully"
 
 artifacts:
   files:
