@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
-files:
-  - source: /
-    destination: /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
+# files:
+#   - source: /
+#     destination: /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
 
 hooks:
   ApplicationStart:
