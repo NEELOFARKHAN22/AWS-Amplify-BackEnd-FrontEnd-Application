@@ -1,46 +1,23 @@
 version: 0.2
 
 phases:
-  pre_build:
+  install:
+    runtime-versions:
+      nodejs: 16
+
     commands:
-      - echo "Preparing to configure Apache for Laravel"
-      - |
-        if systemctl is-active --quiet apache2; then
-          sudo systemctl stop apache2
-        else
-          echo "Apache is not running"
-        fi
+        # install dependency
+        - npm install
 
   build:
-    commands:
-      - echo "Configuring Apache for Laravel"
-      - sudo chown -R www-data:www-data /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
-      - sudo chmod -R 755 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
-      - sudo chmod -R 775 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/storage
-      - sudo chmod -R 775 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/bootstrap/cache
-      - |
-        sudo tee /etc/apache2/sites-available/laravel.conf > /dev/null <<EOT
-        <VirtualHost *:80>
-            ServerAdmin webmaster@localhost
-            DocumentRoot /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/public
-            <Directory /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/public>
-                Options Indexes FollowSymLinks
-                AllowOverride All
-                Require all granted
-            </Directory>
-            ErrorLog \${APACHE_LOG_DIR}/error.log
-            CustomLog \${APACHE_LOG_DIR}/access.log combined
-        </VirtualHost>
-        EOT
-      - sudo a2enmod rewrite
-      - sudo a2dissite 000-default.conf
-      - sudo a2ensite laravel.conf
-      - sudo systemctl restart apache2
-
-  post_build:
-    commands:
-      - echo "Apache configuration completed successfully"
-
+     commands:
+         - npm run-script build
 artifacts:
+  # include  all the files required to run application
   files:
-    - '**/*'
+    - public/**/*
+    - scr/**/*
+    - package.json
+    - server.js
+    - appspec.yml
+    - scripts/**/*
