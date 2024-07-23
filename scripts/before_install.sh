@@ -6,4 +6,4 @@ cd /home/ubuntu
 sudo apt update
 
 # download the nodejs in server.
-sudo apt install nodejs
+sudo apt install nodejs -y
