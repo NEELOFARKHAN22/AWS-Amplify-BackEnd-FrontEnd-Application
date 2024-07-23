@@ -13,16 +13,10 @@ phases:
   build:
     commands:
       - echo Configuring Apache for Laravel
-      - |
-        if [ -d "/home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel" ]; then
-          sudo chown -R www-data:www-data /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
-          sudo chmod -R 755 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
-          sudo chmod -R 775 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/storage
-          sudo chmod -R 775 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/bootstrap/cache
-        else
-          echo "Directory /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel does not exist"
-          exit 1
-        fi
+      - sudo chown -R www-data:www-data /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
+      - sudo chmod -R 755 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel
+      - sudo chmod -R 775 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/storage
+      - sudo chmod -R 775 /home/ubuntu/AWS-Amplify-BackEnd-FrontEnd-Application/Laravel/bootstrap/cache
       - |
         sudo tee /etc/apache2/sites-available/laravel.conf > /dev/null <<EOT
         <VirtualHost *:80>
