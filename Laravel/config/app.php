@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://54.165.35.167'),
+    'url' => env('APP_URL', 'https://neelofar.zapto.org/'),
 
     'asset_url' => env('ASSET_URL'),
 
