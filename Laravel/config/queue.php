@@ -44,7 +44,7 @@ return [
 
         'beanstalkd' => [
             'driver' => 'beanstalkd',
-            'host' => '54.165.35.167',
+            'host' => 'https://neelofar.zapto.org/',
             'queue' => 'default',
             'retry_after' => 90,
             'block_for' => 0,
