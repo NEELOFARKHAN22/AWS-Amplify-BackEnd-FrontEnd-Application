@@ -18,7 +18,7 @@ return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['http://54.165.35.167'],
+    'allowed_origins' => ['https://neelofar.zapto.org/'],
 
     'allowed_origins_patterns' => [],
 
