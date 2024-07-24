@@ -104,3 +104,70 @@ The project is structured to ensure high availability, security, and scalability
 - Click **Next: Tags** (add tags if needed) and then **Next: Review**.
 - Give the role a name (e.g., `CodeDeployRole`).
 - Click **Create role**.
+
+### 1. Create an Amazon RDS MySQL Database
+
+- **Open the RDS Dashboard**
+  - Log in to the AWS Management Console.
+  - Navigate to the **RDS Dashboard**.
+
+- **Create a Database**
+  - Click on **Create database**.
+  - Select **Easy Create**.
+  - Choose **MySQL** as the engine.
+  - Select the **Free Tier** option.
+
+- **Configure Database Settings**
+  - Set the **DB instance identifier** (e.g., `mydatabase`).
+  - Create a **Master username** and **Master password**. Note these credentials.
+  - Choose the **db.t2.micro** instance class.
+
+- **Set Storage Options**
+  - Use the default storage options to stay within Free Tier limits.
+
+- **Configure Connectivity**
+  - Select the VPC where your EC2 instance resides.
+  - Ensure **Public accessibility** is set to **Yes** if you need to connect from outside the VPC.
+  - Choose the existing security group associated with your EC2 instance.
+
+- **Create the Database**
+  - Click **Create database**.
+  - Wait for the database to be created. This may take a few minutes.
+
+#### 2. **Configure Security Groups**
+
+- **Modify Security Groups for RDS**
+  - Go to the **EC2 Dashboard**.
+  - Click on **Security Groups** in the left sidebar.
+  - Select the security group associated with your EC2 instance.
+  - Click **Inbound rules** > **Edit inbound rules**.
+  - Add a new rule:
+    - **Type**: MySQL/Aurora
+    - **Protocol**: TCP
+    - **Port Range**: 3306
+    - **Source**: Custom (Enter the security group ID of your EC2 instance)
+
+- **Save Rules**
+  - Click **Save rules** to apply the changes.
+
+#### 3. **Attach RDS to the EC2 Instance**
+
+- **Retrieve RDS Endpoint**
+  - Go to the **RDS Dashboard**.
+  - Select your database instance.
+  - Copy the **Endpoint** (host) and **Port**.
+
+- **Connect from EC2**
+  - SSH into your EC2 instance.
+  - Install MySQL client if not already installed: 
+    ```sh
+    sudo apt update
+    sudo apt install mysql-client -y
+    ```
+
+- **Test Connection**
+  - Connect to your RDS instance using the MySQL client:
+    ```sh
+    mysql -h <RDS_ENDPOINT> -P 3306 -u <MasterUsername> -p
+    ```
+  - Enter the master password when prompted.
