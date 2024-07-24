@@ -39,3 +39,68 @@ The project is structured to ensure high availability, security, and scalability
 4. **Deployment (AWS CodeDeploy)**
     - Automates the deployment process for both frontend and backend applications.
     - Uses `buildspec.yml` and `appspec.yml` files for configuration.
+      
+
+## Deployment Steps
+
+### 1. Setup AWS Environment
+
+#### Create a VPC
+- Open the **VPC Dashboard** in AWS.
+- Click on **Create VPC**.
+- Choose **VPC with Public and Private Subnets**.
+- Fill in the necessary details like VPC name, IPv4 CIDR block, etc.
+- Click **Create VPC** and note down the VPC ID.
+
+#### Launch an EC2 Instance
+- Go to the **EC2 Dashboard**.
+- Click on **Launch Instance**.
+- Choose an **Amazon Machine Image (AMI)** (e.g., Ubuntu Server 22.04 LTS).
+- Select an **Instance Type** (e.g., t2.micro).
+- Click **Next: Configure Instance Details**.
+- In **Network**, select the VPC you created.
+- In **Subnet**, select one of the public subnets.
+- Ensure **Auto-assign Public IP** is enabled.
+- Click **Next: Add Storage** and adjust storage if needed.
+- Click **Next: Add Tags** and add tags if desired.
+- Click **Next: Configure Security Group**.
+- Create a new security group with rules to allow HTTP (port 80) and SSH (port 22) traffic.
+- Click **Review and Launch**.
+- Click **Launch** and create a new key pair or select an existing key pair.
+- Click **Launch Instances**.
+
+### 2. Setup IAM Roles and Policies
+
+#### Create an IAM Role for the EC2 Instance
+- Open the **IAM Dashboard**.
+- Click on **Roles** in the sidebar.
+- Click on **Create role**.
+- Select **EC2** as the trusted entity.
+- Click **Next: Permissions**.
+- Attach the following policies:
+  - `AmazonEC2RoleforAWSCodeDeploy`
+  - `AmazonS3ReadOnlyAccess`
+  - `SecretsManagerReadWrite`
+  - `AWSCodePipelineCustomActionAccess`
+  - `CloudWatchLogsFullAccess`
+- Click **Next: Tags** (add tags if needed) and then **Next: Review**.
+- Give the role a name (e.g., `EC2CodeDeployRole`).
+- Click **Create role**.
+
+#### Attach the IAM Role to the EC2 Instance
+- Go to the **EC2 Dashboard**.
+- Select the instance you launched.
+- Click on **Actions** > **Security** > **Modify IAM Role**.
+- Select the IAM role you created (e.g., `EC2CodeDeployRole`).
+- Click **Update IAM role**.
+
+#### Create an IAM Role for CodeDeploy
+- Open the **IAM Dashboard**.
+- Click on **Roles** in the sidebar.
+- Click on **Create role**.
+- Select **CodeDeploy** as the trusted entity.
+- Click **Next: Permissions**.
+- Attach the `AWSCodeDeployRole` policy.
+- Click **Next: Tags** (add tags if needed) and then **Next: Review**.
+- Give the role a name (e.g., `CodeDeployRole`).
+- Click **Create role**.
