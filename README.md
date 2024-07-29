@@ -23,13 +23,11 @@ This project demonstrates the deployment of a React.js frontend application and 
 The project is structured to ensure high availability, security, and scalability. Below are the key components and their configurations:
 
 1. **Frontend (React.js)**
-    - Contains sign-in and sign-up pages.
-    - Deployed on EC2 instances behind a load balancer for high availability.
+    - Contains sign-in and sign-up pages
     - Environment variables managed using AWS Secret Manager.
 
 2. **Backend (PHP Laravel)**
     - Provides API endpoints for user authentication and other application features.
-    - Deployed on EC2 instances behind a load balancer.
     - Connects to Amazon RDS MySQL for database operations.
     - Environment variables managed using AWS Secret Manager.
 
