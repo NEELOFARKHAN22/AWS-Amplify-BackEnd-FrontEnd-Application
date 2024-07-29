@@ -1,4 +1,4 @@
-# Deploying a React.js Frontend and PHP Laravel Backend on EC2 using AWS CodeDeploy
+# Deploying a React.js Frontend and PHP Laravel Backend on EC2 using AWS CodePipeline
 
 ## Project Description
 
