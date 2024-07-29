@@ -171,3 +171,103 @@ The project is structured to ensure high availability, security, and scalability
     mysql -h <RDS_ENDPOINT> -P 3306 -u <MasterUsername> -p
     ```
   - Enter the master password when prompted.
+    
+## React Frontend Application Deployment using AWS CodePipeline
+
+#### **Repository URL**
+[https://github.com/NEELOFARKHAN22/test.git](https://github.com/NEELOFARKHAN22/test.git)
+
+#### **Repository Structure**
+- **public/**: Contains the public assets for the React application.
+- **scripts/**: Contains deployment scripts.
+- **src/**: Contains the source code for the React application.
+- **README.md**: This file.
+- **appspec.yml**: AWS CodeDeploy configuration file.
+- **buildspec.yml**: AWS CodeBuild configuration file.
+- **package-lock.json**: Dependency tree lock file.
+- **package.json**: Project metadata and dependencies.
+
+### **Setup Steps**
+
+### **Step 1: Set Up AWS CodePipeline**
+
+#### Create a CodeCommit Repository
+1. Create a new CodeCommit repository.
+2. Push code to this repository.
+
+#### Create a CodeBuild Project
+1. Go to the AWS CodeBuild console and create a new project.
+2. Specify the build environment as:
+   - `Managed Image`
+   - `Ubuntu operating system`
+   - `Node.js runtime`
+3. In the Buildspec section, use the provided `buildspec.yml`.
+   
+#### Create a CodeDeploy Application
+
+1. Go to the AWS CodeDeploy console and create a new application.
+2. Specify the deployment type as:
+   - EC2/On-premises
+3. Create a new deployment group and specify the EC2 instances for deployment.
+4. Use the provided `appspec.yml` file.
+   
+#### Create a CodePipeline
+
+1. Go to the AWS CodePipeline console and create a new pipeline.
+2. Add a source stage with your CodeCommit repository.
+3. Add a build stage with your CodeBuild project.
+4. Add a deploy stage with your CodeDeploy application and deployment group.
+### buildspec.yml file
+```yaml
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+
+    commands:
+      # Install dependencies
+      - npm install
+
+  build:
+    commands:
+      - npm run-script build
+
+artifacts:
+  # Include all the files required to run the application
+  files:
+    - '**/*'
+```
+### appspec.yml file
+```yaml
+version: 0.0
+os: linux
+files:
+hooks:
+  AfterInstall:
+    - location: scripts/after_install.sh
+      runas: ubuntu
+```
+### AfterInstall Script (scripts/after_install.sh)
+```yaml
+#!/bin/bash
+# after install script
+
+app_dir="/var/www/html/admin"
+current_dir="/opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID/$DEPLOYMENT_ID/deployment-archive"
+
+cd "$current_dir"
+
+sudo chown -R www-data:www-data "$current_dir"
+
+if [ -L "$app_dir" ]; then
+    sudo unlink "$app_dir"
+fi
+
+sudo ln -s "$current_dir" "$app_dir"
+```
+### **Steps for Deployment**
+1. **Push Changes:** Push any changes to your CodeCommit repository.
+2. **Monitor Pipeline:** Go to the CodePipeline console and monitor the pipeline execution.
+3. **Verify Deployment:** Once the pipeline completes, verify that the application is deployed and running on your EC2 instance.
