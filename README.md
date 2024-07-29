@@ -250,7 +250,8 @@ hooks:
 ### AfterInstall Script (scripts/after_install.sh)
 ```bash
 #!/bin/bash
-# after install script
+# after install file
+
 
 app_dir="/var/www/html/admin"
 current_dir="/opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID/$DEPLOYMENT_ID/deployment-archive"
@@ -258,6 +259,8 @@ current_dir="/opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID/$DEPLOYM
 cd "$current_dir"
 
 sudo chown -R www-data:www-data "$current_dir"
+sudo chown -R www-data:www-data "$app_dir"
+
 
 if [ -L "$app_dir" ]; then
     sudo unlink "$app_dir"
@@ -269,3 +272,6 @@ sudo ln -s "$current_dir" "$app_dir"
 1. **Push Changes:** Push any changes to your CodeCommit repository.
 2. **Monitor Pipeline:** Go to the CodePipeline console and monitor the pipeline execution.
 3. **Verify Deployment:** Once the pipeline completes, verify that the application is deployed and running on your EC2 instance.
+
+## Backend PHP+Laravel Deployment on AWS EC2
+
