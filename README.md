@@ -250,7 +250,7 @@ hooks:
       runas: ubuntu
 ```
 ### AfterInstall Script (scripts/after_install.sh)
-```yaml
+```bash
 #!/bin/bash
 # after install script
 
